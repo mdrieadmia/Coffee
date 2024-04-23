@@ -26,6 +26,7 @@ const client = new MongoClient(uri, {
 
 
       const coffeeCollection = client.db('CoffeeDB').collection("Coffee");
+      const userCollection = client.db('CoffeeDB').collection("User");
 
 
       app.get('/', (req, res)=>{
@@ -78,6 +79,17 @@ const client = new MongoClient(uri, {
         res.send(result)
       })
 
+      // User related operations   
+      app.post('/user', async(req, res)=>{
+        const newUser = req.body;
+        const result = await userCollection.insertOne(newUser)
+        res.send(result)
+      })
+      app.get('/user', async(req, res)=>{
+        const cursor = userCollection.find();
+        const result = await cursor.toArray();
+        res.send(result)
+      }) 
 
 
       // Send a ping to confirm a successful connection
